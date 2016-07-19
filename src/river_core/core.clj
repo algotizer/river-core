@@ -1,5 +1,5 @@
 (ns river-core.core
-  "Example tasks showing various approaches."
+  "common tasks for building website" 
   {:boot/export-tasks true}
   (:require [boot.core :as boot :refer [deftask]]
             [boot.util :as util]
