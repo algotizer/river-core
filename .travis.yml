@@ -1,0 +1,6 @@
+language: java 
+install: make deps
+jdk:
+  - openjdk7
+  - oraclejdk7
+  - oraclejdk8
