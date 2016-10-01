@@ -1,9 +1,23 @@
 (ns river-core.core
-  "common tasks for building website" 
+  "common tasks for building website"
   {:boot/export-tasks true}
   (:require [boot.core :as boot :refer [deftask]]
             [boot.util :as util]
+            [boot.pod :as pod]
             [io.perun.core :as perun]))
+
+(def ^:private global-deps
+  '[])
+
+(defn- create-pod' [deps]
+  (-> (boot/get-env)
+      (update-in [:dependencies] into global-deps)
+      (update-in [:dependencies] into deps)
+      pod/make-pod))
+
+(defn- create-pod
+  [deps]
+  (future (create-pod' deps)))
 
 (def ^:private +prev-next-defaults+
   {:filterer     identity
@@ -11,7 +25,7 @@
    :comparator (fn [i1 i2] (compare i2 i1))})
 
 (deftask prev-next
-  "Adds :prev :next keys to files metadata. "
+  "Adds :prev :next keys to files metadata."
   [c comparator        COMPARATOR     code "sort by comparator function"
    s sortby            SORTBY         code "sort entries by function"
    _ filterer          FILTER         code "predicate to use for selecting entries (default: `identity`)"]
@@ -46,7 +60,7 @@
       (optset (get-in e kws)))))
 
 (deftask match-and-merge
-  "Adds additional data from set of files to another files metadata by matching. "
+  "Adds additional data from set of files to another set of files' metadata by matching result. "
   [_ source-filterer   SOURCEFILTER   code "predicate to use for selecting writer entries (default {:type 'team'})"
    _ target-filterer   TARGETFILTER   code "predicate to use for selecting entries (default: `identity`)"
    _ match-fn          MATCHFN        code "predicate to use for matching two entries"
@@ -60,3 +74,26 @@
                                   %) targets)]
       (perun/report-info "match-and-merge" "updated %s files" (count updated))
       (perun/merge-meta fileset updated))))
+
+(defn- default-lang-fn [m]
+  "Parses `lang` portion out of the filename in the format: lang-title.ext"
+  (let [ls (clojure.string/split (:filename m) #"[-\.]")
+        langs (first ls)
+        lang-parts (clojure.string/split langs #"[_]")
+        norm-langs (if (> (count lang-parts) 1)
+                     [(first lang-parts) (clojure.string/upper-case (second lang-parts))]
+                     lang-parts)
+        lang (clojure.string/join "-" norm-langs)]
+      (println lang)
+      (keyword lang)))
+
+(deftask lang
+  "Adds :lang key to files metadata. Lang is derived from files metadata."
+  [s lang-fn LANGFN code "function to build Lang from files metadata"]
+  (boot/with-pre-wrap fileset
+    (let [lang-fn       (or lang-fn default-lang-fn)
+          files         (perun/get-meta fileset)
+          updated-files (map #(assoc % :lang (lang-fn %)) files)]
+      (perun/report-debug "lang" "generated slugs" (map :lang updated-files))
+      (perun/report-info "lang" "added langs to %s files" (count updated-files))
+      (perun/set-meta fileset updated-files))))
