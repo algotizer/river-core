@@ -69,7 +69,7 @@
     (let [options       (merge +match-and-merge-defaults+ *opts*)
           sources       (filter (:source-filterer options) (perun/get-meta fileset))
           targets       (filter (:target-filterer options) (perun/get-meta fileset))
-          updated       (mapv #(if-let [matched (some (partial (:match-fn options) %) sources)]
+          updated       (mapv #(if-let [matched (filter (partial (:match-fn options) %) sources)]
                                   ((:merge-fn options) % matched)
                                   %) targets)]
       (perun/report-info "match-and-merge" "updated %s files" (count updated))
