@@ -1,5 +1,6 @@
 (ns river-core.util
   (:require
+    [boot.core :as boot]
     [boot.pod :as pod]))
 
 (def ^:private global-deps
