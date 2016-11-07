@@ -43,3 +43,39 @@
         "<a href=\"/" (name (get-in global [:site-languages 0] :en)) "/\">" (name (get-in global [:site-languages 0] :en)) "</a>"
       "</body>"
     "</html>"))
+
+(defn lang-slug
+  "`lang` aware slug function"
+  [filename]
+  (->> (clojure.string/split filename #"[-\.]")
+       (drop 1)
+       drop-last
+       (clojure.string/join "-")
+       clojure.string/lower-case))
+
+(defn add-end-slash [path]
+  "add end slash to path if path not ends with /"
+  (if (or (.endsWith path "/") (= path ""))
+    path
+    (str path "/")))
+
+(defn prefix-lang-permalink
+  "create a permalink aware of `:lang`, so all files with same lang would be
+   rebase to /your-lang/<your file link>/index.html"
+  [m]
+  (perun/absolutize-url
+    (str (name (:lang m)) "/" (:parent-path m) (add-end-slash (:slug m)))))
+
+(defn postfix-lang-permalink
+  "create a permalink aware of `:lang`, so all files with same lang would be
+   rebase to /<your file link>/<your-lang>/index.html"
+  [m]
+  (perun/absolutize-url
+    (str (:parent-path m) (add-end-slash (:slug m)) (add-end-slash (name (:lang m))))))
+
+(defn domain-lang-permalink
+  "create a permalink ignore :lang, but it need to use with `lang` aware
+   file saving task"
+  [m]
+  (perun/absolutize-url
+    (str (:parent-path m) (add-end-slash (:slug m)))))

@@ -36,11 +36,14 @@
                   nil))
    :merge-fn (fn [target-entry source-entry] (assoc target-entry :author-info source-entry))})
 
-(defn key= [target-key src-key]
-  (fn [t s]
-    (if (= (target-key t) (src-key s))
-      s
-      nil)))
+(defn key=
+  ([target-key]
+   (key= target-key target-key))
+  ([target-key src-key]
+   (fn [t s]
+     (if (= (target-key t) (src-key s))
+       s
+       nil))))
 
 (defn set-of [options & kws]
   (let [optset (set options)]
