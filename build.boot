@@ -19,7 +19,10 @@
        :url         "http://www.algotizer.com/"
        :scm         {:url "https://github.com/zerg000000/river-core"}
        :license     {"Eclipse Public License"
-                     "http://www.eclipse.org/legal/epl-v10.html"}})
+                     "http://www.eclipse.org/legal/epl-v10.html"}
+  push {:ensure-branch  flase
+        :ensure-clean   false
+        :ensure-version +version+}})
 
 (set-env! :source-paths #{"test"})
 

@@ -8,9 +8,8 @@ install:
   - chmod +x ~/bin/boot
 env:
   matrix:
-    # Runs tests twice, using Clj 1.8 and 1.9
+    # Runs tests twice, using Clj 1.8
     - BOOT_CLOJURE_VERSION=1.8.0
-    - BOOT_CLOJURE_VERSION=1.9.0
 jdk:
   - oraclejdk8
 cache:
