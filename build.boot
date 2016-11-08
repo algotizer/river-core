@@ -20,7 +20,7 @@
        :scm         {:url "https://github.com/zerg000000/river-core"}
        :license     {"Eclipse Public License"
                      "http://www.eclipse.org/legal/epl-v10.html"}
-  push {:ensure-branch  false
+  push {:ensure-branch  nil
         :ensure-clean   true
         :ensure-version +version+}})
 
