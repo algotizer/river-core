@@ -1,5 +1,7 @@
 # river-core
 
+![build status](https://travis-ci.org/algotizer/river-core.svg?branch=master)
+
 A collection of Boot tasks to support [Perun](https://github.com/hashobject/perun)
 
 ## Usage
