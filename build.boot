@@ -23,3 +23,9 @@
   "Build and install the project locally."
   []
   (comp (pom) (jar) (install)))
+
+(deftask release-snapshot
+  "Build and deploy to clojars"
+  []
+  (comp (build-jar)
+        (push-snapshot)))
