@@ -9,5 +9,4 @@
   (t/is (= "hello" (i18n/lang-slug "zh_tw.hello.md")))
   (t/is (= "" (i18n/lang-slug "en.md")))
   (t/is (= "" (i18n/lang-slug ".md")))
-  (t/is (= "" (i18n/lang-slug "hello.md")))
-  (t/is (= "" (i18n/lang-slug "zh_tw_ekehello.md"))))
+  (t/is (= "" (i18n/lang-slug "hello.md"))))
