@@ -62,9 +62,9 @@
 (defn prefix-lang-permalink
   "create a permalink aware of `:lang`, so all files with same lang would be
    rebase to /your-lang/<your file link>/index.html"
-  [m]
+  [{:keys [lang parent-path slug]}]
   (perun/absolutize-url
-    (str (name (:lang m)) "/" (:parent-path m) (add-end-slash (:slug m)))))
+    (str (add-end-slash (if lang (name lang) "")) (add-end-slash parent-path) (add-end-slash slug))))
 
 (defn postfix-lang-permalink
   "create a permalink aware of `:lang`, so all files with same lang would be

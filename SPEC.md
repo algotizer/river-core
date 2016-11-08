@@ -10,7 +10,7 @@ set for the tasks using task options.
 
 ## Global metadata
 
-- **:languages**
+- **:site-languages**
     - Required by: *lang* a set of languages which site will be generated, the first
     language would be used as default language for generating redirect page.
 

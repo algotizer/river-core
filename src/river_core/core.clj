@@ -55,7 +55,7 @@
   [_ source-filterer   SOURCEFILTER   code "predicate to use for selecting writer entries (default {:type 'team'})"
    _ target-filterer   TARGETFILTER   code "predicate to use for selecting entries (default: `identity`)"
    _ match-fn          MATCHFN        code "predicate to use for matching two entries"
-   _ merge-fn          MERGEFN        code "function to merge two entries"]
+   _ merge-fn          MERGEFN        code "function to merge sources to targets"]
   (boot/with-pre-wrap fileset
     (let [options       (merge +match-and-merge-defaults+ *opts*)
           sources       (filter (:source-filterer options) (perun/get-meta fileset))
