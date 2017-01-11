@@ -5,7 +5,6 @@
             [boot.util :as util]
             [boot.pod :as pod]
             [io.perun.core :as perun]
-            [io.perun.meta :as pm]
             [river-core.util :as ru]))
 
 (def ^:private +prev-next-defaults+
@@ -71,7 +70,7 @@
   [e enable ENABLE bool "skip serverside rendering"]
   (let [options    (merge {:enable false} *opts*)]
     (boot/with-pre-wrap fileset
-      (let [global-meta (pm/get-global-meta fileset)
+      (let [global-meta (perun/get-global-meta fileset)
             new-global-meta (assoc global-meta :serverside-rendering (not (:enable options)))]
         (-> fileset
-            (pm/set-global-meta new-global-meta))))))
+            (perun/set-global-meta new-global-meta))))))
