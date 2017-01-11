@@ -9,6 +9,8 @@
   (t/is (= "hello" (i18n/lang-slug "zh_tw.hello.md")))
   (t/is (= "" (i18n/lang-slug "en.md")))
   (t/is (= "" (i18n/lang-slug ".md")))
+  (t/is (= "" (i18n/lang-slug nil)))
+  (t/is (= "" (i18n/lang-slug "")))
   (t/is (= "" (i18n/lang-slug "hello.md"))))
 
 (t/deftest prefix-lang-permalink-should-prefix-lang-to-path
