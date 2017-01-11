@@ -66,6 +66,22 @@
       (perun/report-info "match-and-merge" "updated %s files" (count updated))
       (perun/merge-meta fileset updated))))
 
+(def ^:private +merge-global-meta-defaults+
+  {:source-filterer identity
+   :update-fn first})
+
+(deftask update-global-meta
+  "update global-meta given a filtered set of files and a merge function"
+  [_ source-filterer SOURCEFILTER     code "predicate to use for selecting data"
+   _ update-fn        MERGEFN          code "function to merge data to global-meta"]
+  (boot/with-pre-wrap fileset
+    (let [options       (merge +merge-global-meta-defaults+ *opts*)
+          global-meta   (perun/get-global-meta fileset)
+          sources       (filter (:source-filterer options) (perun/get-meta fileset))
+          new-global-meta ((:update-fn options) global-meta sources)]
+      (-> fileset
+          (perun/set-global-meta new-global-meta)))))
+
 (deftask serverside-rendering
   [e enable ENABLE bool "skip serverside rendering"]
   (let [options    (merge {:enable false} *opts*)]
